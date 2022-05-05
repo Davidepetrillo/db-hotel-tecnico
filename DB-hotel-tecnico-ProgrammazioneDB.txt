@@ -1,0 +1,75 @@
+TABELLA STANZE DELL'HOTEL
+
+CREATE TABLE [dbo].[Stanze]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    	[numero_della_stanza] SMALLINT NOT NULL, 
+    	[piano] TINYINT NOT NULL, 
+    	[numero_letti] TINYINT NOT NULL
+)
+
+
+
+TABELLA PRENOTAZIONI 
+
+CREATE TABLE [dbo].[Prenotazioni]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+   	[stanze_id] INT NOT NULL, 
+    	[importo_totale] DECIMAL(10) NOT NULL, 
+    	[durata_soggiorno] VARCHAR(30) NOT NULL, 
+    	CONSTRAINT [FK_prenotazioni_stanze] FOREIGN KEY ([stanze_id]) REFERENCES [Stanze]([id])
+)
+
+
+TABELLA CONFIGURAZIONI
+
+CREATE TABLE [dbo].[Configurazioni]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    	[prenotazioni_id] INT NOT NULL, 
+    	[nome_configurazione] VARCHAR(50) NOT NULL, 
+    	[descrizione] VARCHAR(100) NOT NULL, 
+    	CONSTRAINT [FK_Configurazioni_Prenotazioni] FOREIGN KEY ([prenotazioni_id]) REFERENCES [Prenotazioni]([id])
+)
+
+
+TABELLA PAGAMENTI
+
+CREATE TABLE [dbo].[Pagamenti]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    	[prenotazioni_id] INT NOT NULL, 
+    	[status] BIT NOT NULL, 
+    	[numero_pagamenti] TINYINT NOT NULL, 
+    	[metodo_pagamento] VARCHAR(50) NOT NULL, 
+    	[date] DATE NOT NULL, 
+    	CONSTRAINT [FK_Pagamenti_Prenotazioni] FOREIGN KEY ([prenotazioni_id]) REFERENCES [Prenotazioni]([id])
+)
+
+
+TABELLA OSPITI
+
+CREATE TABLE [dbo].[Ospiti]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    	[nome] VARCHAR(50) NOT NULL, 
+    	[cognome] VARCHAR(50) NOT NULL, 
+    	[data_di_nascita] DATE NOT NULL, 
+    	[tipo_di_documento] VARCHAR(50) NOT NULL, 
+    	[numero_documento] VARCHAR(50) NOT NULL
+)
+
+
+TABELLA OSPIT_PRENOTAZIONI
+
+CREATE TABLE [dbo].[Ospiti_Prenotazioni]
+(
+	[ospiti_id] INT NOT NULL, 
+    	[prenotazione_id] INT NOT NULL, 
+    	CONSTRAINT [FK_Ospiti_Prenotazioni_Ospiti] FOREIGN KEY ([ospiti_id]) REFERENCES [Ospiti]([id]), 
+    	CONSTRAINT [FK_Ospiti_Prenotazioni_Prenotazioni] FOREIGN KEY ([prenotazione_id]) REFERENCES [Prenotazioni]([id])
+)
+
+
+
