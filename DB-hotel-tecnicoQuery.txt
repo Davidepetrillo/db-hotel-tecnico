@@ -77,6 +77,13 @@ WHERE floor =1;
 11. Le stanze sono state tutte prenotate almeno una volta? (Visualizzare le stanze
 non ancora prenotate) - BONUS
 
+SELECT stanza_id 
+FROM prenotazioni
+JOIN stanze
+ON prenotazioni.stanza_id = stanze.id
+WHERE NOT EXISTS( SELECT * 
+FROM stanze
+WHERE prenotazioni.stanza_id = stanze.id)
 
 
 
